@@ -1,6 +1,7 @@
 // selectors
 
 const url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=a";
+const singleCocktail = document.querySelector(".single-cocktail");
 const cocktailImg = document.querySelectorAll(".cocktail-img");
 const cocktailName = document.querySelectorAll(".cocktail-name");
 const cocktailSection = document.querySelector(".cocktail-section");
