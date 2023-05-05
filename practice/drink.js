@@ -1,13 +1,6 @@
 // selectors
 
 const url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=a";
-const drinkCenter = document.querySelector(".drink-center");
-const drinkImg = document.querySelector(".drink-img");
-const drinkTitle = document.querySelector(".drink-info");
-const drinkPrep = document.querySelector(".drink-prep");
-const ingredients = document.querySelector(".ingredients");
-
-// eventlisteners
 
 // functions
 
@@ -24,14 +17,14 @@ async function fetchCocktails(url) {
 
 const displayDrink = (data) => {
   const drink = data[0];
-  //   console.log(drink);
+  // console.log(drink);
   const { strDrinkThumb: image, strDrink: name, strInstructions: desc } = drink;
   //   console.log(name, desc);
   const list = [
-    drink.strIngredient1,
+    drink.strIngredent4,
+    drink.strIngrediient1,
     drink.strIngredient2,
     drink.strIngredient3,
-    drink.strIngredient4,
     drink.strIngredient5,
   ];
   const img = document.querySelector(".drink-img");
@@ -47,7 +40,7 @@ const displayDrink = (data) => {
       if (!item) {
         return;
       } else {
-        return `<li><i class="fa-solid fa-square-check"></i> ${item}</li>`;
+        return `<li><i class="fa-solid fa-square-check"></i>${item} </li>`;
       }
     })
     .join("");
@@ -56,6 +49,7 @@ const displayDrink = (data) => {
 
 const presentDrink = async () => {
   const id = localStorage.getItem("drink");
+  // console.log(id);
   if (!id) {
     window.location.replace = "./index.html";
   } else {

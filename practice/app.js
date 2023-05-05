@@ -1,117 +1,112 @@
 // selectors
 
 const url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=a";
-// const singleCocktail = document.querySelector(".single-cocktail");
-// const cocktailImg = document.querySelectorAll(".cocktail-img");
-// const cocktailName = document.querySelectorAll(".cocktail-name");
+
 const form = document.querySelector(".input-form");
-const searchInput = document.getElementById("searchInput");
+const value = document.getElementById("searchInput");
 
-// // eventListeners
+const fetchCocktails = async () => {
+  try {
+    const resp = await fetch(url);
+    const data = await resp.json();
+    console.log(data);
+    return data.drinks;
+  } catch (error) {
+    return `Not able to fetch data...`;
+  }
+};
 
-// async function fetchCocktails() {
+const displayDrink = (drinks) => {
+  let section = document.querySelector(".cocktail-section");
+  if (!section) {
+    section.innerHTML = null;
+  }
+  const singleDrink = drinks
+    .map((item) => {
+      const { idDrink: id, strDrink: name, strDrinkThumb: image } = item;
+      return `<article class="single-cocktail" data-id="${id} " >
+    <a href="">
+    <img class="cocktail-img" src="${image} " alt="cocktail" />
+    <h2 class="cocktail-name">${name} </h2>
+  </a>
+</article>`;
+    })
+    .join("");
+  section.innerHTML = singleDrink;
+  return section;
+};
+
+const savetoLocalstorage = (section) => {
+  section.addEventListener("click", (e) => {
+    e.preventDefault();
+    const article = e.target.closest("article");
+    const id = article.dataset.id;
+
+    localStorage.setItem("drink", id);
+    window.location.href = "./drink.html";
+  });
+};
+
+const start = async () => {
+  const data = await fetchCocktails();
+  const section = displayDrink(data);
+  if (section) {
+    savetoLocalstorage(section);
+  }
+};
+
+window.addEventListener("DOMContentLoaded", start);
+
+// const fetchDrinks = async () => {
 //   try {
 //     const resp = await fetch(url);
 //     const data = await resp.json();
-
+//     console.log(data);
 //     return data.drinks;
 //   } catch (error) {
-//     cocktailSection.innerHTML = `We couldn't fetch the data, please fix the error.`;
+//     return `Unable to fetch....`;
 //   }
-// }
+// };
+// fetchDrinks();
 
-// async function displayCocktails(cocktail) {
-//   let cocktailsElements = await cocktail
+// const displayDrinks = (drinks) => {
+//   const section = document.querySelector(".cocktail-section");
+//   if (!section) {
+//     section.innerHTML = null;
+//   }
+//   const cocktails = drinks
 //     .map((drink) => {
 //       const { idDrink: id, strDrink: name, strDrinkThumb: image } = drink;
-//       console.log(id);
-//       return `<article class="single-cocktail" data-id="${id}" >
-//        <a href="">
-//        <img class="cocktail-img" src="${image}" alt="cocktail" />
-//      </a>
-//      <h2 class="cocktail-name">${name} </h2>
-//     </article>`;
+
+//       return ` <article class="single-cocktail" data-id="${id} ">
+//     <a href="">
+//     <img class="cocktail-img" src="${image} " />
+//   </a>
+//   <h2 class="cocktail-name">${name} </h2>
+// </div>
+// </article>`;
 //     })
 //     .join("");
-//   cocktailSection.innerHTML = cocktailsElements;
-// }
+//   section.innerHTML = cocktails;
+//   return section;
+// };
 
-// const setDrink = (section) => {
-//   section.addEventListener("click", function (e) {
-//     // prevent navigation to new page
+// const storageDrinks = (section) => {
+//   section.addEventListener("click", (e) => {
 //     e.preventDefault();
-//     let article = e.target.closest("article");
+//     const article = e.target.closest("article");
 //     const id = article.dataset.id;
-//     // console.log(id);
 
-//     // Set id to localstorage
 //     localStorage.setItem("drink", id);
 //     window.location.href = "./drink.html";
 //   });
 // };
 
-// window.addEventListener("DOMContentLoaded", start);
-
-// async function start() {
-//   const data = await fetchCocktails();
-//   const section = await displayCocktails(data);
+// const start = async () => {
+//   const data = await fetchDrinks();
+//   const section = displayDrinks(data);
 //   if (section) {
-//     setDrink(section);
+//     storageDrinks(section);
 //   }
-// }
-
-const fetchDrinks = async () => {
-  try {
-    const resp = await fetch(url);
-    const data = await resp.json();
-    return data.drinks;
-  } catch (error) {
-    return `We are not able to fetch the data"`;
-  }
-};
-fetchDrinks();
-
-const displayCocktails = async (data) => {
-  const section = document.querySelector(".cocktail-section");
-
-  if (!data) {
-    section.innerHTML = null;
-  }
-  let drink = data
-    .map((item) => {
-      const { idDrink: id, strDrink: name, strDrinkThumb: image } = item;
-
-      return `<article class="single-cocktail" data-id=${id}>
-    <a href="">
-    <img class="cocktail-img" src="${image} " alt="cocktail" />
-  </a>
-  <h2 class="cocktail-name">${name} </h2>
-</div>
-</article>`;
-    })
-    .join("");
-
-  section.innerHTML = drink;
-  return section;
-};
-
-const start = async () => {
-  const data = await fetchDrinks();
-  const section = await displayCocktails(data);
-  console.log(section);
-  if (section) {
-    storage(section);
-  }
-};
-start();
-
-const storage = (section) => {
-  section.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    let article = e.target.closest("article");
-    const id = article.dataset.id;
-    localStorage.setItem("drink", id);
-    window.location.href = "./drink.html";
-  });
-};
+// };
+// window.addEventListener("DOMContentLoaded", start);
